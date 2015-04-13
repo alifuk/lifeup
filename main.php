@@ -42,35 +42,32 @@
     <?php
     include 'components/colorbar.php';
     ?>
-    <div class="container" style="max-width:1200px; padding: 20px;">
 
 
-        <nav class="navbar navbar-default">
-            <div class=navbar-inner">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="main.php">Life Up!</a>
-                </div>
 
-
-                <div id="navbar" class="navbar-collapse collapse">
-
-                    <ul class="nav navbar-nav">
-                        <li id="myFilesNav"><a href="main.php"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> My Files</a></li>
-                        <li id="wallNav"><a href="main.php?page=wall"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" onclick="logout()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out</a></li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-default center-block" style="top: 3px;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="main.php">Life Up!</a>
             </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li id="myFilesNav"><a href="main.php"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> My Files</a></li>
+                    <li id="wallNav"><a href="main.php?page=wall"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li>                        
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="logout()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
 
-        </nav>
-
-
-
-
-
-    </div>  
 
 
 
