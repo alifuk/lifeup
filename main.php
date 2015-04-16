@@ -1,8 +1,7 @@
 <!doctype html>
 <head>
-    <meta charset="utf-8">
     <meta charset="UTF-8">
-
+<link href="favicon.ico" rel="icon" type="image/png" />
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
     <script src="lib/cookie.js"></script>
