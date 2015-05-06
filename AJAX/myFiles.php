@@ -4,7 +4,7 @@ require_once 'connect.php';
 
 
 
-$stmt = $conn->prepare('SELECT Id, link, owner, addDate, header, type FROM links WHERE owner = ?');
+$stmt = $conn->prepare('SELECT Id, link, owner, addDate, header, type FROM links WHERE owner = ? AND deleted = false ORDER BY Id DESC');
 $stmt->bind_param('s', $user);
 $user = $_COOKIE["LifeUpCookie"];
 
@@ -17,7 +17,7 @@ $objektText = fread($objekt, filesize("components/objekt.php"));
 fclose($objekt);
 
 while ($stmt->fetch()) {
-    printf($objektText, $link, $link);
+    printf($objektText, $link, $link, $Idecko);
     // printf("id: %s link: <a href='%s' target='_blank'>%s</a> %s %s  <br>", $district, $district2, $district2, $district3, $district4);
 }
 $stmt->close();

@@ -1,8 +1,8 @@
-<a href=%s>
+
     <div class="panel panel-default">
         <div class="panel-body">
-            <span class="glyphicon glyphicon glyphicon-link" aria-hidden="true"></span> %s
+            <a href='%s' target="_blank"><span class="glyphicon glyphicon glyphicon-link" aria-hidden="true" ></span> %s</a>
+            <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true" onclick="deleteItem('%s');"></span>
         </div>
 
     </div>
-</a>

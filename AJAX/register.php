@@ -11,12 +11,12 @@ VALUES (?,?,?)');
     $nick = $_POST['nick'];
     $email = $_POST['email'];
     $password = crypt($_POST['password'], '$2a$07$somesillystringforsalt');
-    $stmt->execute();/*
-    $stmt->bind_result($lastId,$lastId1);
-    while ($stmt->fetch()) {
-        echo $lastId;
-    }
-*/
+    $stmt->execute(); /*
+      $stmt->bind_result($lastId,$lastId1);
+      while ($stmt->fetch()) {
+      echo $lastId;
+      }
+     */
     $stmt = $conn->prepare('SELECT Id FROM users where nick = ? AND email = ?');
     $stmt->bind_param('ss', $nick, $email);
 

@@ -1,10 +1,21 @@
+<?php
+if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
+    header("Location: index.php");
+    die();
+}
+?>
+
+
+
 <!doctype html>
 <head>
     <meta charset="UTF-8">
-<link href="favicon.ico" rel="icon" type="image/png" />
+    <link href="favicon.ico" rel="icon" type="image/png" />
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
     <script src="lib/cookie.js"></script>
+    <script src="lib/sendNewFile.js"></script>
+    <script src="lib/objekt.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <!-- Optional theme -->
@@ -58,11 +69,21 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li id="myFilesNav"><a href="main.php"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> My Files</a></li>
-                    <li id="wallNav"><a href="main.php?page=wall"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li>                        
+                    <li id="wallNav"><a href="main.php?page=wall"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li> 
+
+
+
+
                 </ul>
+                <p class="navbar-text">Signed in as <?php include "./AJAX/returnName.php" ?></p>
+
+
+
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="$('#addItem').toggle(300)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add link</a></li>
                     <li><a href="#" onclick="logout()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out</a></li>
                 </ul>
+
             </div><!--/.nav-collapse -->
         </div>
     </nav>
@@ -72,24 +93,95 @@
 
 
 
-    <div class="container" style="max-width:1800px; padding: 20px;">
-        <?php
-        if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
-            header("Location: index.php");
-            die();
-        }
-        //echo $_COOKIE["LifeUpCookie"];
-        if (isset($_GET['page']) && $_GET['page'] === "wall") {
-            include "AJAX/allFiles.php";
-        } else {
-            include "AJAX/myFiles.php";
-        }
-        ?>
+    <div class="container-fluid" style="//max-width:1800px; padding: 20px;">
+
+        <div class="row" id="addItem" style="display: none;">
+
+            <div class="col-md-3">
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="well ">
+                    <form class="form-inline" action="" style="text-align: center;">
+                        <div class="form-group">
+                            <label for="link">Link</label>
+                            <input type="text" class="form-control" id="link" placeholder="Insert link here">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tags">Tags</label>
+                            <input type="text" class="form-control" id="tags" placeholder="Insert tags">
+                        </div>
+                        <button type="submit" class="btn btn-default" onclick="addFile();" >Add link <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-2">
+
+
+
+
+
+            </div>
+
+
+            <div class="col-md-1" style="background-color: #FFF ; padding: 18px; border-radius: 5px;">
+
+
+                <button type="button" class="btn btn-default btn-sm btn-block">All</button>
+
+
+
+
+
+
+                <button type="button" class="btn btn-default btn-sm btn-block   ">Untagged</button>
+
+
+
+            </div>
+
+
+
+            <div class="col-md-6">
+
+
+                <?php
+                //echo $_COOKIE["LifeUpCookie"];
+                if (isset($_GET['page']) && $_GET['page'] === "wall") {
+                    include "AJAX/allFiles.php";
+                } else {
+                    include "AJAX/myFiles.php";
+                }
+                ?>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
     </div>
 
 
 
-
+    <div id="debug">
+        
+    </div>
+        
 
 
 
