@@ -33,7 +33,7 @@ while ($stmt->fetch()) {
         if (isset($_GET['filterTag']) && $_GET['filterTag'] != "" && $_GET['filterTag'] == $tagName) {
             $obsahujeTagy = true;
         }
-        $tagHTML = $tagHTML . '<button type="button" class="btn btn-default btn-xs tag pull-right">' . $tagName . '</button>';
+        $tagHTML = $tagHTML . '<a href="main.php?filterTag='.$tagName.'" ><button type="button" class="btn btn-default btn-xs tag pull-right">' . $tagName . '</button></a>';
     }
 
     $stmt2->close();
