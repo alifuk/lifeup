@@ -1,27 +1,29 @@
 
 <?php
 
-    require_once '../connect.php';
-    
-    
-    
-    
-    $stmt = $conn->prepare('SELECT Id FROM users WHERE email = ? OR nick = ? AND password = ?'); 
-    $stmt->bind_param('sss',$nick,$nick,$password);
-    $nick =  $_POST['nick'];
-    
-    $password = crypt($_POST['password'], '$2a$07$somesillystringforsalt');
-    $stmt->execute();
+require_once './connect.php';
 
-    $stmt->bind_result($Idecko);
-    while($stmt->fetch()){
-        echo $Idecko;
-        $stmt->close();
-        exit();
-    }
-    $stmt->close();
-    echo "W";
+
+
+
+$stmt = $conn->prepare('
+        SELECT DISTINCT tags.name FROM links 
+LEFT JOIN linkscontags as lct ON links.Id = lct.linkId
+INNER JOIN tags ON lct.tagId = tags.Id 
+WHERE links.deleted = false AND links.owner = ?');
+$stmt->bind_param('s', $user);
+$user = $_COOKIE["LifeUpCookie"];
+
+$stmt->execute();
+
+$stmt->bind_result($tags);
+
+while ($stmt->fetch()) {
     
+    echo '<a href="main.php?filterTag='.$tags.'"  style="margin: 0 0 10px 0; display: block;"> <button type="button" class="btn btn-default btn-sm btn-block">'.$tags.'</button></a>';
+    
+}
+$stmt->close();
 ?>
 
 

@@ -16,14 +16,19 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
     <script src="lib/cookie.js"></script>
     <script src="lib/sendNewFile.js"></script>
     <script src="lib/objekt.js"></script>
+    <script src="lib/bootstrap-tagsinput.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="style.css">
+    
+    
+    
+    
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/bootstrap-tagsinput.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script>
@@ -111,7 +116,7 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
                         
                         <div class="form-group">
                             <label for="tags">Tags</label>
-                            <input type="text" class="form-control" id="tags" placeholder="Insert tags">
+                            <input type="text" class="form-control" id="tags" placeholder="Insert tags" data-role="tagsinput">
                         </div>
                         <button type="submit" class="btn btn-default" onclick="addFile();" >Add link <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                     </form>
@@ -137,13 +142,8 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
             <div class="col-md-1" style="background-color: #FFF ; padding: 18px; border-radius: 5px;">
 
 
-                <button type="button" class="btn btn-default btn-sm btn-block">All</button>
-
-
-
-
-
-
+                <a href="main.php" style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block">All</button></a>
+                <?php include "./AJAX/folders.php"; ?>
                 <button type="button" class="btn btn-default btn-sm btn-block   ">Untagged</button>
 
 

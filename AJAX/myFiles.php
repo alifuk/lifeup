@@ -17,7 +17,35 @@ $objektText = fread($objekt, filesize("components/objekt.php"));
 fclose($objekt);
 
 while ($stmt->fetch()) {
-    printf($objektText, $link, $link, $Idecko);
+
+
+    $obsahujeTagy = false;
+
+    $tagHTML = "";
+
+    $stmt2 = $conn2->prepare('SELECT name FROM linkscontags as lct
+                                LEFT JOIN tags ON lct.tagId = tags.Id WHERE linkId = ?');
+    $stmt2->bind_param('s', $Idecko);
+    $stmt2->execute();
+    $stmt2->bind_result($tagName);
+
+    while ($stmt2->fetch()) {
+        if (isset($_GET['filterTag']) && $_GET['filterTag'] != "" && $_GET['filterTag'] == $tagName) {
+            $obsahujeTagy = true;
+        }
+        $tagHTML = $tagHTML . '<button type="button" class="btn btn-default btn-xs tag pull-right">' . $tagName . '</button>';
+    }
+
+    $stmt2->close();
+
+    if (isset($_GET['filterTag']) && $_GET['filterTag'] != "") {
+        if ($obsahujeTagy) {
+            printf($objektText, $link, $link, $Idecko, $tagHTML);
+        }
+    } else {
+        printf($objektText, $link, $link, $Idecko, $tagHTML);
+    }
+    
     // printf("id: %s link: <a href='%s' target='_blank'>%s</a> %s %s  <br>", $district, $district2, $district2, $district3, $district4);
 }
 $stmt->close();

@@ -19,7 +19,7 @@ VALUES (?,?)');
     $linkId = $stmt->insert_id;
 
 
-    $tagy = explode(" ", $_POST['tags']);
+    $tagy = explode(",", $_POST['tags']);
 
     foreach ($tagy as $tag) {
 
