@@ -4,13 +4,21 @@ require_once 'connect.php';
 
 
 
-$stmt = $conn->prepare('SELECT Id, link, owner, addDate, header, type FROM links WHERE owner = ? AND deleted = false ORDER BY Id DESC');
-$stmt->bind_param('s', $user);
-$user = $_COOKIE["LifeUpCookie"];
+$stmt = $conn->prepare('SELECT links.Id, link, owner, addDate, header, type, nick FROM links INNER JOIN users ON users.Id = links.owner WHERE (owner = ? OR 1=?) AND deleted = false ORDER BY Id DESC');
+$stmt->bind_param('si', $user, $anyUser);
+$anyUser = 0;
+if (isset($_GET['user']) && $_GET['user'] != "") {
+    if($_GET['user'] == "all"){
+        $anyUser = 1;
+    }
+    $user = $_GET['user'];
+} else {
+    $user = $_COOKIE["LifeUpCookie"];
+}
 
 $stmt->execute();
 
-$stmt->bind_result($Idecko, $link, $owner, $addDate, $header, $type);
+$stmt->bind_result($Idecko, $link, $owner, $addDate, $header, $type, $nick);
 
 $objekt = fopen("components/objekt.php", "r") or die("Unable to open file!");
 $objektText = fread($objekt, filesize("components/objekt.php"));
@@ -19,9 +27,15 @@ fclose($objekt);
 while ($stmt->fetch()) {
 
 
-    $obsahujeTagy = false;
+    $obsahujeTagy = false; //jestli to obsahuje tag, který je požadován
+    $maTag = false; //jestli to má libovolný tag
 
-    $tagHTML = "";
+
+    $query_arr = $_GET;
+    $query_arr["user"] = $owner;
+    $query = http_build_query($query_arr);
+
+    $tagHTML = '<a href="main.php?' . $query . '" ><button type="button" class="tag label pull-right label-success">' . $nick . '</button></a>';
 
     $stmt2 = $conn2->prepare('SELECT name FROM linkscontags as lct
                                 LEFT JOIN tags ON lct.tagId = tags.Id WHERE linkId = ?');
@@ -30,23 +44,33 @@ while ($stmt->fetch()) {
     $stmt2->bind_result($tagName);
 
     while ($stmt2->fetch()) {
+        $maTag = true;
         if (isset($_GET['filterTag']) && $_GET['filterTag'] != "" && $_GET['filterTag'] == $tagName) {
             $obsahujeTagy = true;
         }
-        $tagHTML = $tagHTML . '<a href="main.php?filterTag='.$tagName.'" ><button type="button" class="btn btn-default btn-xs tag pull-right">' . $tagName . '</button></a>';
+
+        $query_arr = $_GET;
+        $query_arr["filterTag"] = $tagName;
+        $query = http_build_query($query_arr);
+
+        $tagHTML = $tagHTML . '<a href="main.php?' . $query . '" ><button type="button" class="tag label pull-right label-info">' . $tagName . '</button></a>';
     }
 
     $stmt2->close();
 
     if (isset($_GET['filterTag']) && $_GET['filterTag'] != "") {
-        if ($obsahujeTagy) {
+        if($_GET['filterTag'] == "tagless" && !$maTag){
+            printf($objektText, $link, $link, $Idecko, $tagHTML);
+        } else if ($obsahujeTagy) {
             printf($objektText, $link, $link, $Idecko, $tagHTML);
         }
     } else {
         printf($objektText, $link, $link, $Idecko, $tagHTML);
     }
-    
+
     // printf("id: %s link: <a href='%s' target='_blank'>%s</a> %s %s  <br>", $district, $district2, $district2, $district3, $district4);
 }
+
+echo $stmt->error;
 $stmt->close();
 ?>

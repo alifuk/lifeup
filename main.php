@@ -23,10 +23,10 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    
-    
-    
-    
+
+
+
+
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/bootstrap-tagsinput.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,7 +39,7 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
         }
 
         $(document).ready(function () {
-            if (window.location.toString().indexOf("wall") !== -1) {
+            if (window.location.toString().indexOf("user=all") !== -1) {
                 $("#wallNav").attr("class", "active");
             } else {
                 $("#myFilesNav").attr("class", "active");
@@ -73,14 +73,24 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li id="myFilesNav"><a href="main.php"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> My Files</a></li>
-                    <li id="wallNav"><a href="main.php?page=wall"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li> 
+                    <?php
+                    $query_arr = $_GET;
+                    $query_arr["user"] = $_COOKIE["LifeUpCookie"];
+                    $query = http_build_query($query_arr);
+                    ?>
+                    <li id="myFilesNav"><a href='main.php?<?php echo $query ?>'><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> My Files</a></li>
+                    <?php
+                    $query_arr = $_GET;
+                    $query_arr["user"] = "all";
+                    $query = http_build_query($query_arr);
+                    ?>
+                    <li id="wallNav"><a href='main.php?<?php echo $query ?>'><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Wall</a></li> 
 
 
 
 
                 </ul>
-                <p class="navbar-text">Signed in as <?php include "./AJAX/returnName.php" ?></p>
+                <p class="navbar-text">Signed in as <b><?php include "./AJAX/returnName.php" ?></b></p>
 
 
 
@@ -113,7 +123,7 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
                             <label for="link">Link</label>
                             <input type="text" class="form-control" id="link" placeholder="Insert link here">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="tags">Tags</label>
                             <input type="text" class="form-control" id="tags" placeholder="Insert tags" data-role="tagsinput">
@@ -141,10 +151,20 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
 
             <div class="col-md-1" style="background-color: #FFF ; padding: 18px; border-radius: 5px;">
 
-
-                <a href="main.php" style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block">All</button></a>
+               
+                <?php
+                    $query_arr = $_GET;
+                    $query_arr["filterTag"] = "";
+                    $query = http_build_query($query_arr);
+                ?>
+                <a href='main.php?<?php echo $query ?>' style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block">All</button></a>
                 <?php include "./AJAX/folders.php"; ?>
-                <button type="button" class="btn btn-default btn-sm btn-block   ">Untagged</button>
+                <?php
+                    $query_arr = $_GET;
+                    $query_arr["filterTag"] = "tagless";
+                    $query = http_build_query($query_arr);
+                ?>
+                <a href='main.php?<?php echo $query ?>' style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block   ">Untagged</button></a>
 
 
 
@@ -179,9 +199,9 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
 
 
     <div id="debug">
-        
+
     </div>
-        
+
 
 
 
