@@ -24,9 +24,6 @@ $view = "Line";
 if(isset($_COOKIE['view']) && $_COOKIE['view'] != ""){
     $view = $_COOKIE['view'];
 }
-$objekt = fopen("components/objekt".$view.".php", "r") or die("Unable to open file!");
-$objektText = fread($objekt, filesize("components/objekt".$view.".php"));
-fclose($objekt);
 
 while ($stmt->fetch()) {
 
@@ -65,13 +62,14 @@ while ($stmt->fetch()) {
     if (isset($_GET['filterTag']) && $_GET['filterTag'] != "") {
         if($_GET['filterTag'] == "tagless" && !$maTag){
             
-            
-            printf($objektText, $link, $link, $Idecko, $tagHTML);
+            include './components/objekt'.$view.'.php';
         } else if ($obsahujeTagy) {
-            printf($objektText, $link, $link, $Idecko, $tagHTML);
+            include './components/objekt'.$view.'.php';
+            //printf($objektText, $link, $link, $Idecko, $tagHTML);
         }
     } else {
-        printf($objektText, $link, $link, $Idecko, $tagHTML);
+        include './components/objekt'.$view.'.php';
+        //printf($objektText, $link, $link, $Idecko, $tagHTML);
     }
 
     // printf("id: %s link: <a href='%s' target='_blank'>%s</a> %s %s  <br>", $district, $district2, $district2, $district3, $district4);
