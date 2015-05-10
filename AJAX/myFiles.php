@@ -20,8 +20,12 @@ $stmt->execute();
 
 $stmt->bind_result($Idecko, $link, $owner, $addDate, $header, $type, $nick);
 
-$objekt = fopen("components/objekt.php", "r") or die("Unable to open file!");
-$objektText = fread($objekt, filesize("components/objekt.php"));
+$view = "Line";
+if(isset($_COOKIE['view']) && $_COOKIE['view'] != ""){
+    $view = $_COOKIE['view'];
+}
+$objekt = fopen("components/objekt".$view.".php", "r") or die("Unable to open file!");
+$objektText = fread($objekt, filesize("components/objekt".$view.".php"));
 fclose($objekt);
 
 while ($stmt->fetch()) {
@@ -60,6 +64,8 @@ while ($stmt->fetch()) {
 
     if (isset($_GET['filterTag']) && $_GET['filterTag'] != "") {
         if($_GET['filterTag'] == "tagless" && !$maTag){
+            
+            
             printf($objektText, $link, $link, $Idecko, $tagHTML);
         } else if ($obsahujeTagy) {
             printf($objektText, $link, $link, $Idecko, $tagHTML);

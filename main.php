@@ -37,6 +37,11 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
             setCookie("LifeUpCookie", "0", "-1");
             window.location.replace("main.php");
         }
+        
+        function view(type){
+            setCookie("view", type, "100");
+            window.location.replace("main.php");
+        }
 
         $(document).ready(function () {
             if (window.location.toString().indexOf("user=all") !== -1) {
@@ -95,6 +100,16 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
 
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">View<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" onclick="view('Line');">Lines</a></li>
+                            <li><a href="#" onclick="view('Tile');">Tiles</a></li>
+                        </ul>
+                    </li>
+
+
+
                     <li><a href="#" onclick="$('#addItem').toggle(300)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add link</a></li>
                     <li><a href="#" onclick="logout()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out</a></li>
                 </ul>
@@ -151,18 +166,18 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
 
             <div class="col-md-1" style="background-color: #FFF ; padding: 18px; border-radius: 5px;">
 
-               
+
                 <?php
-                    $query_arr = $_GET;
-                    $query_arr["filterTag"] = "";
-                    $query = http_build_query($query_arr);
+                $query_arr = $_GET;
+                $query_arr["filterTag"] = "";
+                $query = http_build_query($query_arr);
                 ?>
                 <a href='main.php?<?php echo $query ?>' style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block">All</button></a>
                 <?php include "./AJAX/folders.php"; ?>
                 <?php
-                    $query_arr = $_GET;
-                    $query_arr["filterTag"] = "tagless";
-                    $query = http_build_query($query_arr);
+                $query_arr = $_GET;
+                $query_arr["filterTag"] = "tagless";
+                $query = http_build_query($query_arr);
                 ?>
                 <a href='main.php?<?php echo $query ?>' style="margin: 0 0 10px 0; display: block;"><button type="button" class="btn btn-default btn-sm btn-block   ">Untagged</button></a>
 
