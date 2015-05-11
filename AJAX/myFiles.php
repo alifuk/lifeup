@@ -4,11 +4,11 @@ require_once 'connect.php';
 
 
 
-$stmt = $conn->prepare('SELECT links.Id, link, owner, addDate, header, type, nick FROM links INNER JOIN users ON users.Id = links.owner WHERE (owner = ? OR 1=?) AND deleted = false ORDER BY Id DESC');
+$stmt = $conn->prepare('SELECT links.Id, link, owner, addDate, header, type, nick, links.name, image FROM links INNER JOIN users ON users.Id = links.owner WHERE (owner = ? OR 1=?) AND deleted = false ORDER BY Id DESC');
 $stmt->bind_param('si', $user, $anyUser);
 $anyUser = 0;
 if (isset($_GET['user']) && $_GET['user'] != "") {
-    if($_GET['user'] == "all"){
+    if ($_GET['user'] == "all") {
         $anyUser = 1;
     }
     $user = $_GET['user'];
@@ -18,15 +18,17 @@ if (isset($_GET['user']) && $_GET['user'] != "") {
 
 $stmt->execute();
 
-$stmt->bind_result($Idecko, $link, $owner, $addDate, $header, $type, $nick);
+$stmt->bind_result($Idecko, $link, $owner, $addDate, $header, $type, $nick, $name, $image);
 
 $view = "Line";
-if(isset($_COOKIE['view']) && $_COOKIE['view'] != ""){
+if (isset($_COOKIE['view']) && $_COOKIE['view'] != "") {
     $view = $_COOKIE['view'];
 }
 
 while ($stmt->fetch()) {
-
+    if ($name == null || $name == "") {
+        $name = $link;
+    }
 
     $obsahujeTagy = false; //jestli to obsahuje tag, který je požadován
     $maTag = false; //jestli to má libovolný tag
@@ -60,15 +62,15 @@ while ($stmt->fetch()) {
     $stmt2->close();
 
     if (isset($_GET['filterTag']) && $_GET['filterTag'] != "") {
-        if($_GET['filterTag'] == "tagless" && !$maTag){
-            
-            include './components/objekt'.$view.'.php';
+        if ($_GET['filterTag'] == "tagless" && !$maTag) {
+
+            include './components/objekt' . $view . '.php';
         } else if ($obsahujeTagy) {
-            include './components/objekt'.$view.'.php';
+            include './components/objekt' . $view . '.php';
             //printf($objektText, $link, $link, $Idecko, $tagHTML);
         }
     } else {
-        include './components/objekt'.$view.'.php';
+        include './components/objekt' . $view . '.php';
         //printf($objektText, $link, $link, $Idecko, $tagHTML);
     }
 

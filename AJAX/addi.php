@@ -8,11 +8,11 @@ require_once '../connect.php';
 
 if (isset($_POST['link']) && isset($_POST['owner']) && $_POST['link'] != "" && $_POST['owner'] != "" ) {
 
-
-    $stmt = $conn->prepare('INSERT INTO links (link, owner)
-VALUES (?,?)');
-    $stmt->bind_param('si', $link, $owner);
-
+    
+    $stmt = $conn->prepare('INSERT INTO links (link, owner, name, image)
+VALUES (?,?,?,?)');
+    $stmt->bind_param('siss', $link, $owner, $title, $image);
+    
     $link = $_POST['link'];
     $owner = $_POST['owner'];
     $stmt->execute();
