@@ -37,8 +37,8 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
             setCookie("LifeUpCookie", "0", "-1");
             window.location.replace("main.php");
         }
-        
-        function view(type){
+
+        function view(type) {
             setCookie("view", type, "100");
             window.location.replace("main.php");
         }
@@ -49,11 +49,17 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
             } else {
                 $("#myFilesNav").attr("class", "active");
             }
+
+
+<?php
+$query_arr = $_GET;
+$stagy = explode(",", $query_arr["filterTag"]);
+
+foreach ($stagy as $tag) {
+    echo "$('#filterTag').tagsinput('add', '" . $tag . "');";
+}
+?>
         });
-
-
-
-
     </script>
 
 </head>
@@ -97,7 +103,29 @@ if (!isset($_COOKIE["LifeUpCookie"]) || $_COOKIE["LifeUpCookie"] == null) {
                 </ul>
                 <p class="navbar-text">Signed in as <b><?php include "./AJAX/returnName.php" ?></b></p>
 
+                <?php
+                $query_arr = $_GET;
+                unset($query_arr['filterTag']);
 
+                /* echo '<script>';
+                  foreach($stagy as $tag){
+                  echo "$('#filterTag').tagsinput('add', '".$tag."');";
+                  }
+                  echo '</script>'; */
+                ?>
+                <form class="navbar-form navbar-left" role="search" action='main.php' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" data-role="tagsinput" name="filterTag" id='filterTag'> 
+                        <?php
+                            
+                            foreach($query_arr as $key => $value){
+                                
+                                echo '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+                            }
+                            ?>
+                    </div>
+                    <button type="submit" class="btn btn-default" onclick="search();">Search</button>
+                </form>
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
